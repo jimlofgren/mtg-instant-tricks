@@ -8,9 +8,10 @@ Click on a mana symbol/color to see what instant tricks can be used by that colo
 
 ## Getting Started
 
-Clone repo and start with npm start
+npm install
+npm start
 
-## To do
+## To Do
 
 - Add support for more expansions
 - Multiple selections
