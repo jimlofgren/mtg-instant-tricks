@@ -2,25 +2,28 @@ var React = require('react');
 var api = require('../utils/api');
 
 function SelectColor (props) {
-    var colors = ['white', 'blue', 'black', 'red', 'green']
+    var colors = [{id: 'w', name: 'white'},
+                  {id: 'u', name: 'blue'},
+                  {id: 'b', name: 'black'},
+                  {id: 'r', name: 'red'},
+                  {id: 'g', name: 'green'}]
     return (
         <ul className='colors'>
             {colors.map(function (color) {
                 return (
                     <li
-                        style={color === props.selectedColor ? {color: '#c0ffee'} : null}
-                        onClick={props.onSelect.bind(null, color)}
-                        key={color}>
-                        {color}
+                        onClick={props.onSelect.bind(null, color.name)}
+                        key={color.name}>
+                        <i 
+                            className={'ms ms-2x ms-cost ms-' + color.id}
+                            style={color.name === props.selectedColor ? {border: '1px solid black'} : null}>
+                        </i>
                     </li>
                 )
             })}
         </ul>
     )
 }
-
-// SelectColor should be able to set multiple colors
-// colors should be images instead of text
 
 function CardGrid (props) {
     return (
@@ -33,6 +36,12 @@ function CardGrid (props) {
                 )
             })}
         </ul>    
+    )
+}
+
+function LoadingScreen (props) {
+    return (
+        <div className='loading'>Loading...</div>
     )
 }
 
@@ -75,7 +84,7 @@ class Instants extends React.Component {
                 <SelectColor
                     selectedColor={this.state.selectedColor}
                     onSelect={this.updateColor} />
-                {!this.state.cards ? <p>LOADING!</p> : <CardGrid cards={this.state.cards} />}
+                {!this.state.cards ? <LoadingScreen /> : <CardGrid cards={this.state.cards} />}
             </div>
         )
     }

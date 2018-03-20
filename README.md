@@ -10,6 +10,12 @@ Click on a mana symbol/color to see what instant tricks can be used by that colo
 
 Clone repo and start with npm start
 
+## To do
+
+- Add support for more expansions
+- Multiple selections
+- Filter on mana cost
+
 ## Acknowledgments
 
 * [https://magicthegathering.io] - api
