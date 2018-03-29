@@ -39,6 +39,22 @@ function CardGrid (props) {
     )
 }
 
+function SelectExpansion (props) {
+    var expansions = [{id: 'rix', name: 'Rivals of Ixalan'},
+                    {id: 'dom', name: 'Dominaria'}];
+    return (
+        <ul className='expansions'>
+            {expansions.map(function (expansion) {
+                return (
+                    <li key={expansion.name} className='expansion'>
+                        <i className={'ss ss-2x ss-' + expansion.id} />
+                    </li>
+                )
+            })}
+        </ul>
+    )
+}
+
 function LoadingScreen (props) {
     return (
         <div className='loading'>Loading...</div>
@@ -81,6 +97,7 @@ class Instants extends React.Component {
     render() {
         return (
             <div>
+                <SelectExpansion />
                 <SelectColor
                     selectedColor={this.state.selectedColor}
                     onSelect={this.updateColor} />
