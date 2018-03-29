@@ -1,12 +1,15 @@
 const mtg = require('mtgsdk')
 
 module.exports = {
-    fetchCards: function (color) {
+    fetchCards: function (color, expansion) {
+
+        console.log(color + expansion)
+
         return Promise.all([
-                                mtg.card.where({  set: 'rix',
+                                mtg.card.where({  set: expansion,
                                  colors: color,
                                  text: 'Flash' }),
-                                mtg.card.where({  set: 'rix',
+                                mtg.card.where({  set: expansion,
                                  colors: color,
                                  type: 'Instant' })
                                 ])

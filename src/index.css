@@ -50,6 +50,10 @@ li {
     margin: 10px;
 }
 
+.card {
+    max-width: 250px;
+}
+
 .loading {
     display: flex;
     justify-content: center;

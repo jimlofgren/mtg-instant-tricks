@@ -16,7 +16,7 @@ function SelectColor (props) {
                         key={color.name}>
                         <i 
                             className={'ms ms-2x ms-cost ms-' + color.id}
-                            style={color.name === props.selectedColor ? {border: '1px solid black'} : null}>
+                            style={color.name !== props.selectedColor ? {color: 'gray'} : null}>
                         </i>
                     </li>
                 )
@@ -26,12 +26,13 @@ function SelectColor (props) {
 }
 
 function CardGrid (props) {
+    console.log({props})
     return (
         <ul className='cards'>
             {props.cards.map(function (card, index) {
                 return (
                     <li key={card.name} className='card'>
-                        <img src={card.imageUrl} alt={'image for ' + card.name} />
+                        <img src={card.imageUrl} alt={card.name + ' ' + card.originalText} />
                     </li>
                 )
             })}
@@ -41,13 +42,18 @@ function CardGrid (props) {
 
 function SelectExpansion (props) {
     var expansions = [{id: 'rix', name: 'Rivals of Ixalan'},
-                    {id: 'dom', name: 'Dominaria'}];
+                      {id: 'dom', name: 'Dominaria'}];
     return (
         <ul className='expansions'>
             {expansions.map(function (expansion) {
                 return (
-                    <li key={expansion.name} className='expansion'>
-                        <i className={'ss ss-2x ss-' + expansion.id} />
+                    <li 
+                        key={expansion.name} 
+                        onClick={props.onSelect.bind(null, expansion.id)}>
+                        <i 
+                            className={'ss ss-2x ss-' + expansion.id} 
+                            style={expansion.id !== props.selectedExpansion ? {color: 'gray'} : null}>
+                        </i>
                     </li>
                 )
             })}
@@ -66,25 +72,47 @@ class Instants extends React.Component {
         super();
         this.state = {
             selectedColor: null,
-            cards: null
+            cards: null,
+            selectedExpansion: 'rix'
         };
 
         this.updateColor = this.updateColor.bind(this);
+        this.updateExpansion = this.updateExpansion.bind(this);
     }
 
     componentDidMount() {
-        this.updateColor(this.state.selectedColor)
+        this.updateColor(this.state.selectedColor, this.state.selectedExpansion)
     }
 
     updateColor(color) {
         this.setState(function () {
             return {
                 selectedColor: color,
+                selectedExpansion: this.state.selectedExpansion,
                 cards: null
             }
         });
 
-        api.fetchCards(color)
+        api.fetchCards(color, this.state.selectedExpansion)
+            .then(function (cards) {
+                this.setState(function () {
+                    return {
+                        cards: cards
+                    }
+                });
+            }.bind(this));
+    }
+
+    updateExpansion(expansion) {
+        this.setState(function () {
+            return {
+                selectedColor: null,
+                selectedExpansion: expansion,
+                cards: null
+            }
+        });
+
+        api.fetchCards(null, expansion)
             .then(function (cards) {
                 this.setState(function () {
                     return {
@@ -97,7 +125,9 @@ class Instants extends React.Component {
     render() {
         return (
             <div>
-                <SelectExpansion />
+                <SelectExpansion 
+                    selectedExpansion={this.state.selectedExpansion}
+                    onSelect={this.updateExpansion} />
                 <SelectColor
                     selectedColor={this.state.selectedColor}
                     onSelect={this.updateColor} />
