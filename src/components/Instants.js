@@ -73,7 +73,7 @@ class Instants extends React.Component {
         this.state = {
             selectedColor: null,
             cards: null,
-            selectedExpansion: 'rix'
+            selectedExpansion: 'dom'
         };
 
         this.updateColor = this.updateColor.bind(this);
